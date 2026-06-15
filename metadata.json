@@ -1,0 +1,6 @@
+{
+  "name": "Botanica",
+  "description": "An exquisite luxury plant gallery and detailed botanical caretaker greenhouse. Styled with warm terracotta wilderness accents and pine-black moss depths.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

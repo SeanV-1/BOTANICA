@@ -1,0 +1,399 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  
+  /* Primary background: Atmospheric, ultra-rich deep mossy soil pine-black */
+  --color-hunter-950: #090f0b;
+  /* Secondary card backing & panels: Warm dark lichen & chlorophyll */
+  --color-hunter-900: #111a13;
+  /* Borders and framing dividers: Soft muted forest evergreen */
+  --color-hunter-800: #1b2a1e;
+  --color-hunter-700: #2a3c2e;
+  /* Soft organic forest foliage tones */
+  --color-hunter-600: #3b5340;
+  --color-hunter-400: #557c5a;
+  --color-hunter-200: #88aa8d;
+  
+  /* Redefined brand system labels: */
+  /* Main text: Warm, organic antique birch-linen cream (eye-friendly) */
+  --color-brand-cream: #f2f5f0;
+  /* Primary clay potting terracotta accent */
+  --color-brand-terracotta: #d37351;
+  /* Soft glowing warm pollen honey gold */
+  --color-brand-gold: #cca462;
+}
+
+/* Base custom styles to ensure organic high-end look */
+body {
+  background-color: var(--color-hunter-950);
+  color: var(--color-brand-cream);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: var(--color-brand-terracotta);
+  color: var(--color-brand-cream);
+}
+
+/* Custom scrollbar matching dark green studio aesthetic */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-hunter-950);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-hunter-800);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-hunter-700);
+}
+
+/* Modern mobile menu style matching high-end sage-mint organic aesthetic */
+.menu {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-hunter-900);
+  border: 1px solid rgba(198, 209, 194, 0.5); /* translucent moss-border */
+  padding: 6px 10px;
+  border-radius: 9999px;
+  gap: 4px;
+  box-shadow: 0 10px 25px -4px rgba(24, 38, 27, 0.08);
+  width: max-content;
+  max-width: 100%;
+}
+
+.menu__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-brand-cream);
+  opacity: 0.65;
+  transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, transform 0.2s ease;
+  overflow: hidden;
+  gap: 6px;
+  outline: none;
+}
+
+.menu__item:hover {
+  opacity: 0.9;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.menu__item.active {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.65);
+}
+
+.menu__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+}
+
+.menu__icon .icon {
+  width: 17px;
+  height: 17px;
+  stroke: var(--color-brand-cream);
+  stroke-width: 2.2px;
+  transition: stroke 0.3s ease;
+}
+
+.menu__item.active .menu__icon {
+  transform: scale(1.1);
+}
+
+.menu__item.active .menu__icon .icon {
+  stroke: var(--component-active-color, var(--color-brand-terracotta));
+}
+
+.menu__text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  display: inline-block;
+  color: var(--color-brand-cream);
+  transition: opacity 0.35s ease, max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.menu__text.active {
+  opacity: 1;
+  max-width: 120px;
+}
+
+/* Sliding active indicator underline */
+.menu__item::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 1.5px;
+  width: 0px;
+  background-color: var(--component-active-color, var(--color-brand-terracotta));
+  border-radius: 99px;
+  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+}
+
+.menu__item.active::after {
+  opacity: 1;
+  width: var(--lineWidth, 0px);
+}
+
+/* SKEUOMORPHIC MECHANICAL KEYCAP "BLUETOOTH-KEY" BUTTON STYLES */
+.key-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  cursor: pointer;
+}
+
+/* Hidden input that stores state if click toggles it */
+.key-checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Base button mechanical key structure */
+.key-button {
+  all: unset;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, var(--color-hunter-850), var(--color-hunter-900));
+  border-radius: 16px;
+  box-shadow: 
+    0 6px 0 var(--color-hunter-950), /* primary mechanical depth */
+    0 8px 16px rgba(0, 0, 0, 0.45), /* desk shadow */
+    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.1); /* top reflection edge */
+  transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* Keycap highlights on hover */
+.key-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 16px;
+  background: radial-gradient(circle at 50% 15%, rgba(255, 255, 255, 0.1), transparent 60%);
+  pointer-events: none;
+}
+
+/* Bevel corner structures */
+.key-corner {
+  position: absolute;
+  inset: 2.5px;
+  border-radius: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 40%, rgba(0, 0, 0, 0.25) 100%);
+  pointer-events: none;
+}
+
+/* Inside cylinder / concave socket layout */
+.key-inner {
+  position: absolute;
+  inset: 5px 5px 10px 5px;
+  background: radial-gradient(ellipse at 50% 25%, var(--color-hunter-900) 0%, var(--color-hunter-950) 100%);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    inset 0 2.5px 5px rgba(0, 0, 0, 0.6), /* physical inset */
+    inset 0 -1px 1.5px rgba(255, 255, 255, 0.05);
+  transition: inset 0.1s ease, background 0.1s ease;
+}
+
+/* LED Indicator light (normally small circle near the upper right or bottom center of button, let's put it top center) */
+.key-led {
+  position: absolute;
+  top: 10px;
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background-color: #324136; /* dark grey-green */
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.6);
+  transition: all 0.2s ease;
+  z-index: 5;
+}
+
+/* Icon / SVG graphics */
+.key-symbol {
+  width: 20px;
+  height: 20px;
+  color: var(--color-brand-cream);
+  opacity: 0.6;
+  transition: all 0.2s ease;
+  filter: drop-shadow(0 1px 0.5px rgba(0,0,0,0.4));
+  transform: translateY(1.5px);
+}
+
+/* Back bezel panel shine highlight effects */
+.key-bg {
+  position: absolute;
+  z-index: -1;
+  inset: -2px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(0,0,0,0.25));
+  pointer-events: none;
+}
+
+/* Button keycap depression animation when checked or active */
+.key-checkbox:checked + .key-button,
+.key-button:active,
+.key-button.active {
+  transform: translateY(4px);
+  background: linear-gradient(135deg, var(--color-hunter-900), var(--color-hunter-950));
+  box-shadow: 
+    0 2px 0 var(--color-hunter-950), /* collapsed depth */
+    0 3px 6px rgba(0, 0, 0, 0.5), /* closer shadow */
+    inset 0 1px 1px rgba(255, 255, 255, 0.05);
+}
+
+.key-checkbox:checked + .key-button .key-inner,
+.key-button:active .key-inner,
+.key-button.active .key-inner {
+  inset: 4px 5px 6px 5px; /* physical compression */
+}
+
+/* LED Bright illumination when checked or active! */
+.key-checkbox:checked + .key-button .key-led,
+.key-button.active .key-led {
+  background-color: var(--led-glow-color, #a7f3d0); /* sage bright green/teal */
+  box-shadow: 
+    0 0 6px var(--led-glow-color, #10b981), 
+    0 0 10px var(--led-glow-color, #10b981),
+    inset 0 1px 1px rgba(255, 255, 255, 0.8);
+}
+
+.key-checkbox:checked + .key-button .key-symbol,
+.key-button.active .key-symbol {
+  color: var(--symbol-active-color, #34d399);
+  opacity: 1;
+  filter: drop-shadow(0 0 4px var(--symbol-glow-color, rgba(52,211,153,0.4)));
+}
+
+/* Noise overlay to give premium textured feel */
+.key-noise {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.02;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* INTERACTIVE LUXURY CURSOR SPOTLIGHT EFFECTS (ZERO RE-RENDER ARCHITECTURE) */
+.mouse-spotlight-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  opacity: var(--mouse-opacity, 0);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  background: radial-gradient(
+    800px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+    rgba(255, 255, 253, 0.07) 0%,      /* bright soft warm white center */
+    rgba(255, 255, 252, 0.03) 35%,     /* subtle dispersion */
+    rgba(255, 255, 255, 0.01) 60%,     /* soft outer aura */
+    transparent 80%
+  );
+  transform-origin: var(--mouse-x, 50%) var(--mouse-y, 50%);
+}
+
+.mouse-spotlight-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 50; /* floats on top of text but ignores pointer activity */
+  opacity: var(--mouse-opacity, 0);
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  background: radial-gradient(
+    350px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+    rgba(255, 255, 254, 0.08) 0%,      /* bright focal core */
+    rgba(255, 255, 253, 0.02) 40%,     /* feather edge */
+    transparent 80%
+  );
+  mix-blend-mode: screen;
+  transform-origin: var(--mouse-x, 50%) var(--mouse-y, 50%);
+}
+
+/* Subtle organic 'bloom' scaling and breathing animations */
+@keyframes spotlight-bloom-bg {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.22);
+    filter: brightness(1.4);
+  }
+}
+
+@keyframes spotlight-bloom-overlay {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.28);
+    filter: brightness(1.65);
+  }
+}
+
+/* Trigger bloom breathing animation dynamically when hovering over plant cards, buttons, or list tags */
+html:has([id^='plant-card-']:hover) .mouse-spotlight-bg,
+html:has(.key-button:hover) .mouse-spotlight-bg {
+  animation: spotlight-bloom-bg 4.5s ease-in-out infinite;
+}
+
+html:has([id^='plant-card-']:hover) .mouse-spotlight-overlay,
+html:has(.key-button:hover) .mouse-spotlight-overlay {
+  animation: spotlight-bloom-overlay 4.5s ease-in-out infinite;
+}
+
+
